@@ -1,0 +1,57 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual Environment
+.venv/
+venv/
+env/
+
+# Build
+build/
+dist/
+*.egg-info/
+
+# Pytest
+.pytest_cache/
+.coverage
+.coverage.*
+htmlcov/
+
+# Ruff
+.ruff_cache/
+
+# MyPy
+.mypy_cache/
+
+# Pyright / Pylance
+.pyright/
+
+# Hypothesis
+.hypothesis/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Celery
+celerybeat-schedule
+
+# SQLite
+*.sqlite3
+*.db
+
+# Alembic
+*.pyc
+
+# dotenv
+.env
+.env.*
+!.env.example
+
+# Local uploads
+uploads/
+media/
+
+# VSCode Python
+.python-version
