@@ -6,6 +6,7 @@ FROM python:3.13-slim
 
 WORKDIR /app
 
+
 # gcc e libpq-dev são necessários para compilar dependencies nativas
 # (psycopg2-binary já traz binário próprio, mas libpq-dev cobre casos em
 # que o wheel pré-compilado não esta disponível para a plataforma).
