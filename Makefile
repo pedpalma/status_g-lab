@@ -10,8 +10,13 @@ export
 help: ## lista os comandos disponíveis
 	@grep -hE '^[a-zA-Z_-]+:.*## ' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*## "}; {printf "  make %-18s %s\n", $$1, $$2}'
 
-up: ## sobe os containers em background
+up: ## Sobe os serviços em background
 	docker compose up -d
+	@echo ""
+	@echo "  ✓ Serviços iniciados com sucesso"
+	@echo "  API:      http://localhost:8000"
+	@echo "  Docs:     http://localhost:8000/docs"
+	@echo "  Frontend: http://localhost:3000"
 
 up-build: ## reconstrói as imagens e sobe os containers
 	docker compose up -d --build
