@@ -1,0 +1,54 @@
+# Sistema Operacional
+.DS_Store
+Thumbs.db
+
+
+# IDEs
+.vscode/
+.idea/
+
+# JetBrains
+*.iml
+
+
+# Logs
+*.log
+
+
+# Ambiente
+.env
+.env.*
+!.env.example
+
+
+# Arquivos temporários
+*.tmp
+*.temp
+*.bak
+*.swp
+*.swo
+*~
+
+
+# Certificados locais
+*.pem
+*.key
+*.crt
+
+
+# Docker Override
+docker-compose.override.yml
+
+
+# Coverage Geral
+coverage/
+
+
+# Terraform (caso exista)
+.terraform/
+*.tfstate
+*.tfstate.*
+
+
+# Misc
+.cache/
