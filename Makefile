@@ -77,10 +77,8 @@ clean: ## remove containers, volumes e imagens locais do projeto
 deps-compile: ## Recompila requirements.txt a partir de requirements.in
 	docker compose exec backend pip-compile requirements.in --output-file requirements.txt
 
-.PHONY: deps-upgrade
 deps-upgrade: ## Atualiza todas as dependências para versões mais recentes
 	docker compose exec backend pip-compile --upgrade requirements.in --output-file requirements.txt
 
-.PHONY: deps-sync
 deps-sync: ## Sincroniza site-packages com requirements.txt (dentro do container)
 	docker compose exec backend pip-sync requirements.txt
