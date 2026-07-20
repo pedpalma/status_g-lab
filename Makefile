@@ -61,7 +61,7 @@ db-shell: ## abre o psql dentro do container do postgres
 	docker compose exec postgres psql -U $(POSTGRES_USER) -d $(POSTGRES_DB)
 
 test: ## executa os testes automatizados do backend
-	docker compose exec backend pytest -v
+	docker compose exec backend python -m pytest -v
 
 backend-outdated: ## lista dependências desatualizadas do backend (nao instala nada)
 	docker compose exec backend pip list --outdated
