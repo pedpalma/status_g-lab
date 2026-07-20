@@ -82,3 +82,6 @@ deps-upgrade: ## Atualiza todas as dependências para versões mais recentes
 
 deps-sync: ## Sincroniza site-packages com requirements.txt (dentro do container)
 	docker compose exec backend pip-sync requirements.txt
+
+deps-install: ## Instala dependências do requirements.txt (dentro do container)
+	docker compose exec backend pip install -r requirements.txt
