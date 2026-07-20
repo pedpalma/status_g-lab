@@ -30,6 +30,9 @@ down-v: ## para e remove os containers e o volume do banco (apaga os dados)
 build: ## reconstrói as imagens sem subir os containers
 	docker compose build
 
+rebuild: ## Rebuild forçado sem cache (use após mudar Dockerfile ou deps)
+	docker compose build --no-cache
+
 restart: ## reinicia os serviços
 	docker compose restart
 
