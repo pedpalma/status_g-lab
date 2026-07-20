@@ -9,19 +9,19 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 class Settings(BaseSettings):
     model_config = SettingsConfigDict(env_file=".env", extra="ignore")
 
-    # Banco de dados
-    database_url: str
+    # Banco de dados. Em docker-compose.yml, DATABASE_URL é composta a
+    # partir de POSTGRES_USER/POSTGRES_PASSWORD/POSTGRES_DB e injetada
+    # como variável de ambiente do container backend.
+    DATABASE_URL: str
 
-    # Autenticação
-    jwt_secret: str
-    jwt_algorithm: str = "HS256"
-    jwt_expire_minutes: int = 60
+    # JWT
+    JWT_SECRET: str
+    JWT_ALGORITHM: str = "HS256"
+    JWT_EXPIRE_MINUTES: int = 60
 
-    # Integração externa (backend/app/external/cep.py)
-    viacep_base_url: str = "https://viacep.com.br/ws"
-
-    # Armazenamento de imagens
-    storage_path: str = "/app/storage"
+    # Demais variáveis já usadas pelo projeto.
+    VIACEP_BASE_URL: str = "https://viacep.com.br/ws"
+    STORAGE_PATH: str = "/app/storage"
 
 
 settings = Settings()  # type: ignore[call-arg]
