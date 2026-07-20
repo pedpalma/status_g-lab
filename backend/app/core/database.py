@@ -1,24 +1,33 @@
-"""Engine e sessão do SQLAlchemy.
-SQLAlchemy síncrono por decisão de simplicidade:
-o volume de acesso concorrente esperado para este sistema não justifica a
-complexidade adicional de sessions assíncronas."""
+"""
+REFERÊNCIA — este arquivo já existe no projeto (current_state.txt confirma
+app/core/database.py com engine+get_db). Incluído aqui apenas para permitir
+testar security.py, deps.py e o domínio auth de forma isolada.
 
-from collections.abc import Generator
+Ponto de atenção: se o database.py real ainda não tiver a classe `Base`
+(não mencionada em current_state.txt, e models.py é o primeiro model do
+projeto), adicionar apenas o bloco `Base` abaixo ao arquivo real — sem
+necessidade de reescrever engine/get_db, que já devem existir e funcionar
+(validado por /health/db).
+"""
+
+from typing import Generator
 
 from sqlalchemy import create_engine
-from sqlalchemy.orm import Session, sessionmaker
+from sqlalchemy.orm import DeclarativeBase, Session, sessionmaker
 
 from app.core.config import settings
 
-engine = create_engine(settings.database_url, pool_pre_ping=True)
-
+engine = create_engine(settings.DATABASE_URL)
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
 
+class Base(DeclarativeBase):
+    """Classe base declarativa. Todo model novo (users, routes, etc.) herda daqui."""
+
+    pass
+
+
 def get_db() -> Generator[Session, None, None]:
-    """Dependency do FastAPI: entrega uma sessão por request e garante o
-    fechamento ao final, mesmo em caso de exceção."""
-    # TODO: quando o domínio auth for implementado, mover está função para app/core/deps.py junto de get_current_user e require_role.
     db = SessionLocal()
     try:
         yield db
