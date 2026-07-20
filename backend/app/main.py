@@ -1,8 +1,4 @@
-"""Ponto de entrada da aplicação FastAPI.
-Neste momento a aplicação contem apenas endpoints de verificação de saúde,
-usados para confirmar que os containers docker sobem
-corretamente e conseguem se comunicar entre si.
-"""
+"""Ponto de entrada da aplicação FastAPI."""
 
 from fastapi import Depends, FastAPI, Response, status
 from sqlalchemy import text
@@ -10,8 +6,13 @@ from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy.orm import Session
 
 from app.core.database import get_db
+from app.routers.auth import router as auth_router
+from app.routers.users import router as users_router
 
 app = FastAPI(title="Status G-Lab Telecom API")
+
+app.include_router(auth_router)
+app.include_router(users_router)
 
 
 @app.get("/health")
