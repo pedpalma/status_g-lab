@@ -23,5 +23,9 @@ class Settings(BaseSettings):
     VIACEP_BASE_URL: str = "https://viacep.com.br/ws"
     STORAGE_PATH: str = "/app/storage"
 
+    # CORS. O frontend privado chama a API direto do navegador
+    # (NEXT_PUBLIC_API_URL), por isso precisa estar liberado aqui.
+    FRONTEND_URL: str = "http://localhost:3000"
+
 
 settings = Settings()  # type: ignore[call-arg]
