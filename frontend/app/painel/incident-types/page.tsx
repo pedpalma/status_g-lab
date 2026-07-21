@@ -29,6 +29,7 @@ export default function IncidentTypesPage() {
   }
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     loadTypes();
   }, []);
 
