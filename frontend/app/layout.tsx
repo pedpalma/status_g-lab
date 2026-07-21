@@ -4,9 +4,6 @@ import "./globals.css";
 // Fontsource + Next.js. O @import direto de node_modules dentro do CSS
 // não resolve nesse pipeline (Turbopack + @tailwindcss/postcss) e quebrava
 // o build.
-import "@fontsource/space-grotesk/500.css";
-import "@fontsource/space-grotesk/600.css";
-import "@fontsource/space-grotesk/700.css";
 import { AuthProvider } from "../components/private/AuthProvider";
 
 export const metadata: Metadata = {
