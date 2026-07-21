@@ -1,7 +1,4 @@
 @import "tailwindcss";
-@import "@fontsource/space-grotesk/500.css";
-@import "@fontsource/space-grotesk/600.css";
-@import "@fontsource/space-grotesk/700.css";
 
 @theme {
   /* azul-escuro */
@@ -43,7 +40,7 @@
 :root {
   --ease: cubic-bezier(0.22, 1, 0.36, 1);
   --dur: 0.25s;
-  --topbar-h: 38px; /* reservado para a topbar do dominio publico */
+  --topbar-h: 38px; /* reservado para a topbar do dominio publico (s2_3) */
   --header-h: 68px;
 }
 
