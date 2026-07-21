@@ -17,6 +17,7 @@ from app.core.database import Base  # noqa: E402
 # (necessário para autogenerate futuro). Adicionar aqui a cada novo domínio.
 from app.domains.users.models import User  # noqa: E402,F401
 from app.domains.routes.models import Route  # noqa: E402,F401
+from app.domains.incident_types.models import IncidentType  # noqa: E402,F401
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
