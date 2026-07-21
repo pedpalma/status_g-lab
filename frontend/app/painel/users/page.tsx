@@ -32,6 +32,10 @@ export default function UsersPage() {
   }
 
   useEffect(() => {
+    // Carga inicial da lista ao montar a tela. Padrão necessário sem uma
+    // lib de data-fetching (React Query/SWR) -- fora de escopo aqui pela
+    // simplicidade do projeto.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     loadUsers();
   }, []);
 
