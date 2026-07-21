@@ -29,7 +29,7 @@ export default function PrivateTopbar() {
             <Link
               key={link.href}
               href={link.href}
-              className="text-sm text-light-gray transition-colors duration-[var(--dur)] hover:text-cyan"
+              className="text-sm text-light-gray transition-colors duration-(--dur) hover:text-cyan"
             >
               {link.label}
             </Link>
@@ -41,7 +41,7 @@ export default function PrivateTopbar() {
         {role && <span className="text-xs text-mid-gray">{role}</span>}
         <button
           onClick={logout}
-          className="text-sm text-mid-gray transition-colors duration-[var(--dur)] hover:text-cyan"
+          className="text-sm text-mid-gray transition-colors duration-(--dur) hover:text-cyan"
         >
           Sair
         </button>
