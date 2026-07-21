@@ -1,24 +1,57 @@
 @import "tailwindcss";
+@import "@fontsource/space-grotesk/500.css";
+@import "@fontsource/space-grotesk/600.css";
+@import "@fontsource/space-grotesk/700.css";
+
+@theme {
+  /* azul-escuro */
+  --color-navy: #04122b;
+  --color-navy-mid: #0a1f4a;
+  --color-navy-light: #0d2760;
+  --color-blue: #1045a8;
+  --color-blue-mid: #1558d6;
+
+  /* ciano */
+  --color-cyan: #00c6ff;
+  --color-cyan-dim: rgba(0, 198, 255, 0.12);
+  --color-glow: rgba(0, 198, 255, 0.25);
+
+  /* neutros */
+  --color-white: #ffffff;
+  --color-transparent-grey: #f4f7fe8e;
+  --color-off-white: #f4f7fe;
+  --color-light-gray: #e8edf8;
+  --color-mid-gray: #8a97b8;
+  --color-dark-gray: #444d69;
+  --color-dark-text: #0f1b35;
+
+  /* feedback */
+  --color-success: #10d97e;
+
+  /* sombras */
+  --shadow-sm: 0 2px 8px rgba(4, 18, 43, 0.15);
+  --shadow-md: 0 8px 32px rgba(4, 18, 43, 0.22);
+  --shadow-lg: 0 20px 60px rgba(4, 18, 43, 0.3);
+  --shadow-glow: 0 0 40px rgba(0, 198, 255, 0.18);
+
+  /* fontes */
+  --font-sans:
+    ui-sans-serif, system-ui, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --font-display: "Space Grotesk", ui-sans-serif, system-ui, sans-serif;
+}
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --dur: 0.25s;
+  --topbar-h: 38px; /* reservado para a topbar do dominio publico */
+  --header-h: 68px;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background-color: var(--color-navy-mid);
+  color: var(--color-off-white);
+}
+
+button {
+  cursor: pointer;
 }
