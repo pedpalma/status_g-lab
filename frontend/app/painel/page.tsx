@@ -29,7 +29,7 @@ export default function PainelHome() {
           <li key={s.href}>
             <Link
               href={s.href}
-              className="flex items-center justify-between py-4 text-off-white transition-colors duration-[var(--dur)] hover:text-cyan"
+              className="flex items-center justify-between py-4 text-off-white transition-colors duration-(--dur) hover:text-cyan"
             >
               <div>
                 <p className="font-display text-sm font-medium">{s.label}</p>
