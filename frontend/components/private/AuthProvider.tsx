@@ -31,8 +31,14 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
+    // Sincroniza o estado com o localStorage (fonte externa) uma única vez
+    // no mount. É o padrão "mounted guard" (SSR não tem acesso a
+    // localStorage), documentado pelo próprio Next.js. A regra nova do
+    // eslint-plugin-react-hooks marca isso como erro por padrão; aqui é
+    // um falso positivo conhecido, por isso o disable pontual.
     const stored = getToken();
     if (isTokenValid(stored)) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setTokenState(stored);
     } else {
       clearToken();
