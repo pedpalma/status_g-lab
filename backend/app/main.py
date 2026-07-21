@@ -1,10 +1,12 @@
 """Ponto de entrada da aplicação FastAPI."""
 
 from fastapi import Depends, FastAPI, Response, status
+from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy import text
 from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy.orm import Session
 
+from app.core.config import settings
 from app.core.database import get_db
 from app.routers.auth import router as auth_router
 from app.routers.incident_types import router as incident_types_router
@@ -12,6 +14,15 @@ from app.routers.routes import router as routes_router
 from app.routers.users import router as users_router
 
 app = FastAPI(title="Status G-Lab Telecom API")
+
+# Necessário porque o frontend privado chama a API direto do navegador
+# (origem diferente: :3000 -> :8000), não via server-side fetch.
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=[settings.FRONTEND_URL],
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 app.include_router(auth_router)
 app.include_router(users_router)
