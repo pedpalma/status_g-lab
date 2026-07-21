@@ -1,11 +1,7 @@
 "use client";
 
 import { useEffect, useState, type FormEvent } from "react";
-import {
-  incidentTypesApi,
-  ApiError,
-  type IncidentType,
-} from "../../../lib/api";
+import { incidentTypesApi, ApiError, type IncidentType } from "../../../lib/api";
 
 export default function IncidentTypesPage() {
   const [types, setTypes] = useState<IncidentType[]>([]);
@@ -20,9 +16,7 @@ export default function IncidentTypesPage() {
     try {
       setTypes(await incidentTypesApi.list());
     } catch (err) {
-      setError(
-        err instanceof ApiError ? err.message : "Falha ao carregar tipos.",
-      );
+      setError(err instanceof ApiError ? err.message : "Falha ao carregar tipos.");
     } finally {
       setIsLoading(false);
     }
@@ -71,18 +65,14 @@ export default function IncidentTypesPage() {
       }
       await loadTypes();
     } catch (err) {
-      setError(
-        err instanceof ApiError ? err.message : "Falha ao atualizar tipo.",
-      );
+      setError(err instanceof ApiError ? err.message : "Falha ao atualizar tipo.");
     }
   }
 
   return (
     <div>
       <div className="flex items-center justify-between">
-        <h1 className="font-display text-xl font-semibold text-white">
-          Tipos de incidente
-        </h1>
+        <h1 className="font-display text-xl font-semibold text-white">Tipos de incidente</h1>
         <button
           onClick={startCreate}
           className="rounded-md bg-blue-mid px-4 py-2 font-display text-sm font-medium text-white hover:bg-blue"
@@ -94,10 +84,7 @@ export default function IncidentTypesPage() {
       {error && <p className="mt-4 text-sm text-red-400">{error}</p>}
 
       {isFormOpen && (
-        <form
-          onSubmit={handleSubmit}
-          className="mt-6 flex flex-col gap-4 border-t border-navy-light pt-6"
-        >
+        <form onSubmit={handleSubmit} className="mt-6 flex flex-col gap-4 border-t border-navy-light pt-6">
           <div className="flex flex-col gap-1.5">
             <label className="text-xs text-mid-gray">Nome</label>
             <input
@@ -140,29 +127,17 @@ export default function IncidentTypesPage() {
           <tbody>
             {types.map((type) => (
               <tr key={type.id} className="border-b border-navy-light">
-                <td className="py-3 capitalize">
-                  {type.name.replace(/_/g, " ")}
-                </td>
+                <td className="py-3 capitalize">{type.name.replace(/_/g, " ")}</td>
                 <td className="py-3">
-                  <span
-                    className={
-                      type.is_active ? "text-success" : "text-mid-gray"
-                    }
-                  >
+                  <span className={type.is_active ? "text-success" : "text-mid-gray"}>
                     {type.is_active ? "Ativo" : "Inativo"}
                   </span>
                 </td>
                 <td className="py-3 text-right">
-                  <button
-                    onClick={() => startEdit(type)}
-                    className="mr-4 text-light-gray hover:text-cyan"
-                  >
+                  <button onClick={() => startEdit(type)} className="mr-4 text-light-gray hover:text-cyan">
                     Editar
                   </button>
-                  <button
-                    onClick={() => toggleActive(type)}
-                    className="text-light-gray hover:text-cyan"
-                  >
+                  <button onClick={() => toggleActive(type)} className="text-light-gray hover:text-cyan">
                     {type.is_active ? "Desativar" : "Ativar"}
                   </button>
                 </td>

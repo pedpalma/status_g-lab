@@ -36,7 +36,7 @@ async function request<T>(path: string, options: RequestInit = {}): Promise<T> {
   return res.json();
 }
 
-// auth
+// ---- auth ----
 export function login(email: string, password: string) {
   return request<{ access_token: string; token_type: string }>("/auth/login", {
     method: "POST",
@@ -44,7 +44,7 @@ export function login(email: string, password: string) {
   });
 }
 
-// users
+// ---- users ----
 export type Role = "tecnico" | "admin";
 
 export type User = {
@@ -74,15 +74,11 @@ export const usersApi = {
   create: (data: UserInput) =>
     request<User>("/users", { method: "POST", body: JSON.stringify(data) }),
   update: (id: number, data: UserPatch) =>
-    request<User>(`/users/${id}`, {
-      method: "PATCH",
-      body: JSON.stringify(data),
-    }),
-  deactivate: (id: number) =>
-    request<void>(`/users/${id}`, { method: "DELETE" }),
+    request<User>(`/users/${id}`, { method: "PATCH", body: JSON.stringify(data) }),
+  deactivate: (id: number) => request<void>(`/users/${id}`, { method: "DELETE" }),
 };
 
-// routes (rotas de rede)
+// ---- routes (rotas de rede) ----
 export type NetworkRoute = {
   id: number;
   name: string;
@@ -91,27 +87,18 @@ export type NetworkRoute = {
 };
 
 export type NetworkRouteInput = { name: string; description?: string };
-export type NetworkRoutePatch = Partial<NetworkRouteInput> & {
-  is_active?: boolean;
-};
+export type NetworkRoutePatch = Partial<NetworkRouteInput> & { is_active?: boolean };
 
 export const routesApi = {
   list: () => request<NetworkRoute[]>("/routes"),
   create: (data: NetworkRouteInput) =>
-    request<NetworkRoute>("/routes", {
-      method: "POST",
-      body: JSON.stringify(data),
-    }),
+    request<NetworkRoute>("/routes", { method: "POST", body: JSON.stringify(data) }),
   update: (id: number, data: NetworkRoutePatch) =>
-    request<NetworkRoute>(`/routes/${id}`, {
-      method: "PATCH",
-      body: JSON.stringify(data),
-    }),
-  deactivate: (id: number) =>
-    request<void>(`/routes/${id}`, { method: "DELETE" }),
+    request<NetworkRoute>(`/routes/${id}`, { method: "PATCH", body: JSON.stringify(data) }),
+  deactivate: (id: number) => request<void>(`/routes/${id}`, { method: "DELETE" }),
 };
 
-// incident types
+// ---- incident types ----
 export type IncidentType = {
   id: number;
   name: string;
@@ -119,22 +106,13 @@ export type IncidentType = {
 };
 
 export type IncidentTypeInput = { name: string };
-export type IncidentTypePatch = Partial<IncidentTypeInput> & {
-  is_active?: boolean;
-};
+export type IncidentTypePatch = Partial<IncidentTypeInput> & { is_active?: boolean };
 
 export const incidentTypesApi = {
   list: () => request<IncidentType[]>("/incident-types"),
   create: (data: IncidentTypeInput) =>
-    request<IncidentType>("/incident-types", {
-      method: "POST",
-      body: JSON.stringify(data),
-    }),
+    request<IncidentType>("/incident-types", { method: "POST", body: JSON.stringify(data) }),
   update: (id: number, data: IncidentTypePatch) =>
-    request<IncidentType>(`/incident-types/${id}`, {
-      method: "PATCH",
-      body: JSON.stringify(data),
-    }),
-  deactivate: (id: number) =>
-    request<void>(`/incident-types/${id}`, { method: "DELETE" }),
+    request<IncidentType>(`/incident-types/${id}`, { method: "PATCH", body: JSON.stringify(data) }),
+  deactivate: (id: number) => request<void>(`/incident-types/${id}`, { method: "DELETE" }),
 };

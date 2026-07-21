@@ -7,13 +7,7 @@ import {
   useState,
   type ReactNode,
 } from "react";
-import {
-  clearToken,
-  decodeToken,
-  getToken,
-  isTokenValid,
-  setToken,
-} from "../../lib/auth";
+import { clearToken, decodeToken, getToken, isTokenValid, setToken } from "../../lib/auth";
 import { login as loginRequest } from "../../lib/api";
 
 type AuthState = {
@@ -43,10 +37,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     } else {
       clearToken();
     }
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setIsLoading(false);
   }, []);
 
-  const role = token ? (decodeToken(token)?.role ?? null) : null;
+  const role = token ? decodeToken(token)?.role ?? null : null;
 
   async function login(email: string, password: string) {
     const { access_token } = await loginRequest(email, password);

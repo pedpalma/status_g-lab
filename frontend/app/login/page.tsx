@@ -25,11 +25,7 @@ export default function LoginPage() {
       await login(email, password);
       router.push("/painel");
     } catch (err) {
-      setError(
-        err instanceof ApiError
-          ? err.message
-          : "Erro ao conectar com o servidor.",
-      );
+      setError(err instanceof ApiError ? err.message : "Erro ao conectar com o servidor.");
     } finally {
       setIsSubmitting(false);
     }
@@ -38,9 +34,7 @@ export default function LoginPage() {
   return (
     <main className="flex flex-1 items-center justify-center px-6 py-24">
       <div className="w-full max-w-sm">
-        <h1 className="font-display text-2xl font-semibold text-white">
-          Área técnica
-        </h1>
+        <h1 className="font-display text-2xl font-semibold text-white">Área técnica</h1>
         <p className="mt-1 text-sm text-mid-gray">
           Acesso restrito para técnicos e administradores.
         </p>

@@ -5,11 +5,7 @@ import { useRouter } from "next/navigation";
 import { useAuth } from "../../components/private/AuthProvider";
 import PrivateTopbar from "../../components/private/PrivateTopbar";
 
-export default function PainelLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function PainelLayout({ children }: { children: React.ReactNode }) {
   const { token, isLoading } = useAuth();
   const router = useRouter();
 
@@ -30,9 +26,7 @@ export default function PainelLayout({
   return (
     <>
       <PrivateTopbar />
-      <main className="mx-auto w-full max-w-4xl flex-1 px-6 py-10">
-        {children}
-      </main>
+      <main className="mx-auto w-full max-w-4xl flex-1 px-6 py-10">{children}</main>
     </>
   );
 }

@@ -18,9 +18,7 @@ export default function RoutesPage() {
     try {
       setRoutes(await routesApi.list());
     } catch (err) {
-      setError(
-        err instanceof ApiError ? err.message : "Falha ao carregar rotas.",
-      );
+      setError(err instanceof ApiError ? err.message : "Falha ao carregar rotas.");
     } finally {
       setIsLoading(false);
     }
@@ -69,9 +67,7 @@ export default function RoutesPage() {
       }
       await loadRoutes();
     } catch (err) {
-      setError(
-        err instanceof ApiError ? err.message : "Falha ao atualizar rota.",
-      );
+      setError(err instanceof ApiError ? err.message : "Falha ao atualizar rota.");
     }
   }
 
@@ -90,10 +86,7 @@ export default function RoutesPage() {
       {error && <p className="mt-4 text-sm text-red-400">{error}</p>}
 
       {isFormOpen && (
-        <form
-          onSubmit={handleSubmit}
-          className="mt-6 flex flex-col gap-4 border-t border-navy-light pt-6"
-        >
+        <form onSubmit={handleSubmit} className="mt-6 flex flex-col gap-4 border-t border-navy-light pt-6">
           <div className="flex flex-col gap-1.5">
             <label className="text-xs text-mid-gray">Nome</label>
             <input
@@ -109,9 +102,7 @@ export default function RoutesPage() {
             <textarea
               rows={3}
               value={form.description}
-              onChange={(e) =>
-                setForm({ ...form, description: e.target.value })
-              }
+              onChange={(e) => setForm({ ...form, description: e.target.value })}
               className="rounded-md border border-navy-light bg-navy-light px-3 py-2 text-sm text-white outline-none focus:border-cyan"
             />
           </div>
@@ -149,29 +140,17 @@ export default function RoutesPage() {
             {routes.map((route) => (
               <tr key={route.id} className="border-b border-navy-light">
                 <td className="py-3">{route.name}</td>
-                <td className="py-3 text-light-gray">
-                  {route.description || "Sem descrição"}
-                </td>
+                <td className="py-3 text-light-gray">{route.description || "Sem descrição"}</td>
                 <td className="py-3">
-                  <span
-                    className={
-                      route.is_active ? "text-success" : "text-mid-gray"
-                    }
-                  >
+                  <span className={route.is_active ? "text-success" : "text-mid-gray"}>
                     {route.is_active ? "Ativa" : "Inativa"}
                   </span>
                 </td>
                 <td className="py-3 text-right">
-                  <button
-                    onClick={() => startEdit(route)}
-                    className="mr-4 text-light-gray hover:text-cyan"
-                  >
+                  <button onClick={() => startEdit(route)} className="mr-4 text-light-gray hover:text-cyan">
                     Editar
                   </button>
-                  <button
-                    onClick={() => toggleActive(route)}
-                    className="text-light-gray hover:text-cyan"
-                  >
+                  <button onClick={() => toggleActive(route)} className="text-light-gray hover:text-cyan">
                     {route.is_active ? "Desativar" : "Ativar"}
                   </button>
                 </td>
