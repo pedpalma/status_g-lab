@@ -9,7 +9,7 @@ from app.core.database import Base
 
 
 class IncidentType(Base):
-    __tablename__ = "incident_type"
+    __tablename__ = "incident_types"
 
     id: Mapped[int] = mapped_column(primary_key=True)
     name: Mapped[str] = mapped_column(String(100), nullable=False, unique=True)
