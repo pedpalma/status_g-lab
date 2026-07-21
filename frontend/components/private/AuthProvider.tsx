@@ -1,6 +1,12 @@
 "use client";
 
-import { createContext, useContext, useState, type ReactNode } from "react";
+import {
+  createContext,
+  useContext,
+  useEffect,
+  useState,
+  type ReactNode,
+} from "react";
 import {
   clearToken,
   decodeToken,
@@ -21,16 +27,18 @@ type AuthState = {
 const AuthContext = createContext<AuthState | null>(null);
 
 export function AuthProvider({ children }: { children: ReactNode }) {
-  const [token, setTokenState] = useState<string | null>(() => {
+  const [token, setTokenState] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
     const stored = getToken();
-
     if (isTokenValid(stored)) {
-      return stored;
+      setTokenState(stored);
+    } else {
+      clearToken();
     }
-
-    clearToken();
-    return null;
-  });
+    setIsLoading(false);
+  }, []);
 
   const role = token ? (decodeToken(token)?.role ?? null) : null;
 
@@ -46,15 +54,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }
 
   return (
-    <AuthContext.Provider
-      value={{
-        token,
-        role,
-        isLoading: false,
-        login,
-        logout,
-      }}
-    >
+    <AuthContext.Provider value={{ token, role, isLoading, login, logout }}>
       {children}
     </AuthContext.Provider>
   );
@@ -62,10 +62,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
 export function useAuth() {
   const ctx = useContext(AuthContext);
-
-  if (!ctx) {
-    throw new Error("useAuth precisa estar dentro de AuthProvider");
-  }
-
+  if (!ctx) throw new Error("useAuth precisa estar dentro de AuthProvider");
   return ctx;
 }
