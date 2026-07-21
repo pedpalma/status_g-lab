@@ -1,5 +1,12 @@
 import type { Metadata } from "next";
 import "./globals.css";
+// Import via JS/TS (não via @import no CSS): é o padrão suportado pelo
+// Fontsource + Next.js. O @import direto de node_modules dentro do CSS
+// não resolve nesse pipeline (Turbopack + @tailwindcss/postcss) e quebrava
+// o build.
+import "@fontsource/space-grotesk/500.css";
+import "@fontsource/space-grotesk/600.css";
+import "@fontsource/space-grotesk/700.css";
 import { AuthProvider } from "../components/private/AuthProvider";
 
 export const metadata: Metadata = {
