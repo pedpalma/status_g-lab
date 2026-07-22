@@ -1,4 +1,4 @@
-"""Services do incidents domain"""
+"""Serviços do domínio incidents: create/list/get."""
 
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session
@@ -16,7 +16,7 @@ class InvalidReferenceError(Exception):
 def _get_status_id(db: Session, name: str) -> int:
     status_row = db.query(IncidentStatus).filter(IncidentStatus.name == name).first()
     if status_row is None:
-        raise RuntimeError(f"Status '{name} não encontrado em incident_status.")
+        raise RuntimeError(f"Status '{name}' não encontrado em incident_status. ")
     return status_row.id
 
 
@@ -36,7 +36,7 @@ def create_incident(
         status_id=status_id,
         cep=cep,
         description=description,
-        created_at=created_by,
+        created_by=created_by,
     )
     db.add(incident)
     try:
