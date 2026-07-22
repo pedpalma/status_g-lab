@@ -10,6 +10,7 @@ from app.core.config import settings
 from app.core.database import get_db
 from app.routers.auth import router as auth_router
 from app.routers.incident_types import router as incident_types_router
+from app.routers.incidents import router as incidents_router
 from app.routers.routes import router as routes_router
 from app.routers.users import router as users_router
 
@@ -28,6 +29,7 @@ app.include_router(auth_router)
 app.include_router(users_router)
 app.include_router(routes_router)
 app.include_router(incident_types_router)
+app.include_router(incidents_router)
 
 
 @app.get("/health")
