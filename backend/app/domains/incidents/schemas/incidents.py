@@ -21,6 +21,7 @@ class IncidentResponse(BaseModel):
     status_id: int
     cep: str
     city: str | None
+    street: str | None
     description: str
     created_by: int
     created_at: datetime
