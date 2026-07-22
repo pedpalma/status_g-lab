@@ -15,6 +15,7 @@ from app.domains.incidents.models import Incident
 from app.domains.incidents.services import create_incident
 from app.domains.routes.models import Route
 from app.domains.users.models import User
+from app.external.cep import CepLookupResult
 from app.routers.incidents import router as incidents_router
 
 
@@ -29,6 +30,28 @@ def app(db: Session) -> FastAPI:
 @pytest.fixture()
 def client(app: FastAPI) -> TestClient:
     return TestClient(app)
+
+
+@pytest.fixture(autouse=True)
+def cep_lookup_padrao(monkeypatch: pytest.MonkeyPatch) -> CepLookupResult:
+    """Por padrão, todo teste deste domínio mocka o ViaCEP com sucesso.
+    Testes que precisam simular falha de lookup usam
+    a fixture `cep_lookup_falha` explicitamente."""
+    resultado = CepLookupResult(city="São Paulo", street="Avenida Paulista")
+    monkeypatch.setattr(
+        "app.domains.incidents.services.incidents.lookup_cep", lambda cep: resultado
+    )
+    return resultado
+
+
+@pytest.fixture()
+def cep_lookup_falha(monkeypatch: pytest.MonkeyPatch) -> None:
+    """Sobrescreve o mock padrão simulando falha do ViaCEP (cep inválido,
+    timeout, serviço fora do ar)."""
+    monkeypatch.setattr(
+        "app.domains.incidents.services.incidents.lookup_cep",
+        lambda cep: CepLookupResult(city=None, street=None),
+    )
 
 
 @pytest.fixture()
