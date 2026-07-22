@@ -123,7 +123,7 @@ test: ## Executa os testes automatizados do Backend (Pytest)
 	docker compose exec backend python -m pytest -v
 
 migrate: ## Aplica as migrações pendentes no banco de dados
-	docker compose exec backend python manage.py migrate
+	docker compose exec backend alembic upgrade head
 
 deps-outdated: ## Lista as dependências do Python que estão desatualizadas
 	docker compose exec backend pip list --outdated
