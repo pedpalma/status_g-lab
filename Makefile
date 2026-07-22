@@ -119,25 +119,25 @@ sh-db: ## Abre o terminal do PostgreSQL (psql) dentro do container do banco
 
 # BACKEND
 
-backend-test: ## Executa os testes automatizados do Backend (Pytest)
+test: ## Executa os testes automatizados do Backend (Pytest)
 	docker compose exec backend python -m pytest -v
 
-backend-migrate: ## Aplica as migrações pendentes no banco de dados
+migrate: ## Aplica as migrações pendentes no banco de dados
 	docker compose exec backend python manage.py migrate
 
-backend-outdated: ## Lista as dependências do Python que estão desatualizadas
+deps-outdated: ## Lista as dependências do Python que estão desatualizadas
 	docker compose exec backend pip list --outdated
 
-backend-deps-compile: ## Recompila o requirements.txt a partir do requirements.in
+deps-compile: ## Recompila o requirements.txt a partir do requirements.in
 	docker compose exec backend pip-compile requirements.in --output-file requirements.txt
 
-backend-deps-upgrade: ## Atualiza as dependências do requirements.in para a última versão
+deps-upgrade: ## Atualiza as dependências do requirements.in para a última versão
 	docker compose exec backend pip-compile --upgrade requirements.in --output-file requirements.txt
 
-backend-deps-sync: ## Sincroniza os pacotes instalados com o requirements.txt
+deps-sync: ## Sincroniza os pacotes instalados com o requirements.txt
 	docker compose exec backend pip-sync requirements.txt
 
-backend-deps-install: ## Instala as dependências listadas no requirements.txt
+deps-install: ## Instala as dependências listadas no requirements.txt
 	docker compose exec backend pip install -r requirements.txt
 
 
