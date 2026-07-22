@@ -5,6 +5,7 @@ from sqlalchemy.orm import Session
 
 from app.domains.incident_status.models import IncidentStatus
 from app.domains.incidents.models import Incident
+from app.external.cep import lookup_cep
 
 STATUS_INICIAL = "aberto"
 
@@ -29,12 +30,15 @@ def create_incident(
     created_by: int,
 ) -> Incident:
     status_id = _get_status_id(db, STATUS_INICIAL)
+    cep_result = lookup_cep(cep)
 
     incident = Incident(
         type_id=type_id,
         route_id=route_id,
         status_id=status_id,
         cep=cep,
+        city=cep_result.city,
+        street=cep_result.street,
         description=description,
         created_by=created_by,
     )
