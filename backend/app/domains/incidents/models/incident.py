@@ -21,6 +21,7 @@ class Incident(Base):
     )
     cep: Mapped[str] = mapped_column(String(9), nullable=False)
     city: Mapped[str | None] = mapped_column(String(100), nullable=True)
+    street: Mapped[str | None] = mapped_column(String(200), nullable=True)
     description: Mapped[str] = mapped_column(Text, nullable=False)
     created_by: Mapped[int] = mapped_column(ForeignKey("users.id"), nullable=False)
     created_at: Mapped[datetime] = mapped_column(
