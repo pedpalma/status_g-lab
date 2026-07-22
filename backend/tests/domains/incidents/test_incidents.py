@@ -3,6 +3,7 @@
 from sqlalchemy.orm import Session
 
 from app.domains.incidents.models import Incident
+from app.external.cep import CepLookupResult
 
 
 def _cleanup_incident(db: Session, incident_id: int) -> None:
@@ -11,7 +12,13 @@ def _cleanup_incident(db: Session, incident_id: int) -> None:
 
 
 def test_create_incident_tecnico_ok(
-    db, client, tecnico_headers, rota_ativa, tipo_ativo, status_aberto
+    db,
+    client,
+    tecnico_headers,
+    rota_ativa,
+    tipo_ativo,
+    status_aberto,
+    cep_lookup_padrao: CepLookupResult,
 ):
     payload = {
         "type_id": tipo_ativo.id,
@@ -23,7 +30,8 @@ def test_create_incident_tecnico_ok(
     assert response.status_code == 201
     body = response.json()
     assert body["status_id"] == status_aberto.id
-    assert body["city"] is None
+    assert body["city"] == cep_lookup_padrao.city
+    assert body["street"] == cep_lookup_padrao.street
     assert body["closed_at"] is None
     _cleanup_incident(db, body["id"])
 
@@ -38,6 +46,25 @@ def test_create_incident_admin_ok(db, client, admin_headers, rota_ativa, tipo_at
     response = client.post("/incidents", json=payload, headers=admin_headers)
     assert response.status_code == 201
     _cleanup_incident(db, response.json()["id"])
+
+
+def test_create_incident_cep_lookup_falha(
+    db, client, tecnico_headers, rota_ativa, tipo_ativo, cep_lookup_falha
+):
+    """Falha no ViaCEP (cep inválido, timeout, serviço fora do ar) não
+    bloqueia a criação: city e street ficam None."""
+    payload = {
+        "type_id": tipo_ativo.id,
+        "route_id": rota_ativa.id,
+        "cep": "00000-000",
+        "description": "Incidente com CEP sem correspondência no ViaCEP.",
+    }
+    response = client.post("/incidents", json=payload, headers=tecnico_headers)
+    assert response.status_code == 201
+    body = response.json()
+    assert body["city"] is None
+    assert body["street"] is None
+    _cleanup_incident(db, body["id"])
 
 
 def test_create_incident_sem_token(client, rota_ativa, tipo_ativo):
