@@ -201,21 +201,20 @@ lazy:
 	@gum style \
 		--foreground 212 \
 		--bold \
-		"  Git Lazy"
+		" - Lazy commit"
 	@echo
 	@if [ -z "$$(git status --porcelain)" ]; then \
-		gum style --foreground 214 "⚠ Nenhuma alteração para commit."; \
+		gum style --foreground 214 " ⚠ Nenhuma alteração para commit."; \
 		exit 1; \
 	fi
 	@echo
-	@gum style --foreground 240 "Use as setas para escolher um commit recente ou aperte ESC para digitar um novo."
-	@msg=$$(git log -n 30 --pretty=format:"%s" | awk '!seen[$$0]++' | gum filter --height 10 --placeholder "Pesquise commits antigos (ESC para pular)" || true); \
-	if [ -z "$$msg" ]; then \
-		msg=$$(gum input \
-			--prompt "Commit > " \
-			--placeholder "feat(scope): descrição nova"); \
-	fi; \
-	[ -n "$$msg" ] || { gum style --foreground 196 "❌ Operação cancelada."; exit 1; }; \
+	@gum style --foreground 240 "Selecione um commit base para editar (ou aperte ESC para começar do zero)."
+	@base_msg=$$(git log -n 30 --pretty=format:"%s" | awk '!seen[$$0]++' | gum filter --height 10 --placeholder "Pesquise commits antigos..." || true); \
+	msg=$$(gum input \
+		--prompt "Commit > " \
+		--placeholder "feat(scope): descrição" \
+		--value "$$base_msg"); \
+	[ -n "$$msg" ] || { echo; gum style --foreground 196 "❌ Operação cancelada."; exit 1; }; \
 	git add . && \
 	git commit -m "$$msg" && \
 	git push
