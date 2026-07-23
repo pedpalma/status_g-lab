@@ -203,16 +203,19 @@ lazy:
 		--bold \
 		"  Git Lazy"
 	@echo
-	@git status
-	@if git diff --quiet && git diff --cached --quiet; then \
+	@if [ -z "$$(git status --porcelain)" ]; then \
 		gum style --foreground 214 "⚠ Nenhuma alteração para commit."; \
 		exit 1; \
 	fi
 	@echo
-	@msg=$$(gum input \
-		--prompt "Commit > " \
-		--placeholder "feat(scope): descrição"); \
-	[ -n "$$msg" ] || exit 1; \
+	@gum style --foreground 240 "Use as setas para escolher um commit recente ou aperte ESC para digitar um novo."
+	@msg=$$(git log -n 30 --pretty=format:"%s" | awk '!seen[$$0]++' | gum filter --height 10 --placeholder "Pesquise commits antigos (ESC para pular)" || true); \
+	if [ -z "$$msg" ]; then \
+		msg=$$(gum input \
+			--prompt "Commit > " \
+			--placeholder "feat(scope): descrição nova"); \
+	fi; \
+	[ -n "$$msg" ] || { gum style --foreground 196 "❌ Operação cancelada."; exit 1; }; \
 	git add . && \
 	git commit -m "$$msg" && \
 	git push
