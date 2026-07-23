@@ -62,40 +62,41 @@ admin:
 # DOCKER (CICLO DE VIDA)
 
 up: ## Sobe os serviços em background (Detached)
-	@echo "\n  ⚠ Inicializando os serviços..."
+	@echo "\n  ⚠ Inicializando os serviços...\n"
 	docker compose up -d
+	@echo
 	@echo "\n  ✓ Serviços iniciados com sucesso!"
 	@echo " - API (Backend): http://localhost:8000"
 	@echo " - Swagger/Docs:  http://localhost:8000/docs"
 	@echo " - Frontend:      http://localhost:3000\n"
-
+	@echo
 down: ## Para e remove os containers (Mantém os volumes e dados do banco)
-	@echo "\n  ⚠ Parando serviços..."
+	@echo "\n  ⚠ Parando serviços...\n"
 	docker compose down
-	@echo "\n  ✓ Serviços parados com sucesso!"
+	@echo "\n  ✓ Serviços parados com sucesso!\n"
 
 down-v: ## Para e remove os containers, destruindo também os volumes (APAGA OS DADOS)
-	@echo "\n  ⚠ Removendo os serviços..."
+	@echo "\n  ⚠ Removendo os serviços...\n"
 	docker compose down -v
-	@echo "\n  ✓ Serviços e volumes removidos com sucesso!"
+	@echo "\n  ✓ Serviços e volumes removidos com sucesso!\n"
 
 build: ## Constrói as imagens sem subir os containers
-	@echo "\n  ⚠ Construindo imagens..."
+	@echo "\n  ⚠ Construindo imagens...\n"
 	docker compose build
-	@echo "\n  ✓ imagens construídas com sucesso!"
+	@echo "\n  ✓ imagens construídas com sucesso!\n"
 
 rebuild: ## Reconstrói as imagens ignorando o cache (Útil após alterar Dockerfile)
-	@echo "\n  ⚠ Reconstruindo imagens..."
+	@echo "\n  ⚠ Reconstruindo imagens...\n"
 	docker compose build --no-cache
-	@echo "\n  ✓ imagens reconstruídas com sucesso!"
+	@echo "\n  ✓ imagens reconstruídas com sucesso!\n"
 
 restart: ## Reinicia os serviços do Docker Compose
-	@echo "\n  ⚠ Reiniciando os serviços Docker..."
+	@echo "\n  ⚠ Reiniciando os serviços Docker...\n"
 	docker compose restart
-	@echo "\n  ✓ serviços reiniciados com sucesso!"
+	@echo "\n  ✓ serviços reiniciados com sucesso!\n"
 
 status: ## Lista os containers do projeto e o status de cada um
-	@echo "\n  - Checagem do status dos serviços:"
+	@echo "\n  - Checagem do status dos serviços:\n"
 	docker compose ps
 
 
@@ -126,18 +127,18 @@ logs-db: ## Acompanha os logs apenas do serviço Postgres
 sh-backend: ## Abre o terminal (bash) dentro do container do Backend
 	@echo "\n  ⚠ Criando shell para o container backend...\n"
 	docker compose exec backend bash
-	@echo "\n  ✓ Saindo do shell..."
+	@echo "\n  ✓ Saindo do shell...\n"
 
 sh-frontend: ## Abre o terminal (sh) dentro do container do Frontend
 	@echo "\n  ⚠ Criando shell para o container frontend...\n"
 	docker compose exec frontend sh
-	@echo "\n  ✓ Saindo do shell..."
+	@echo "\n  ✓ Saindo do shell...\n"
 
 
 sh-db: ## Abre o terminal do PostgreSQL (psql) dentro do container do banco
 	@echo "\n  ⚠ Criando shell de acesso para a database...\n"
 	docker compose exec postgres psql -U $(POSTGRES_USER) -d $(POSTGRES_DB)
-	@echo "\n  ✓ Saindo do shell..."
+	@echo "\n  ✓ Saindo do shell..\n"
 
 
 
