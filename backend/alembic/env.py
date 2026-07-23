@@ -20,6 +20,7 @@ from app.domains.routes.models import Route  # noqa: E402,F401
 from app.domains.incident_types.models import IncidentType  # noqa: E402,F401
 from app.domains.incident_status.models import IncidentStatus  # noqa: E402,F401
 from app.domains.incidents.models import Incident  # noqa: E402,F401
+from app.domains.incidents.updates.models import IncidentUpdate  # noqa: E402,F401
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
