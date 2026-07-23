@@ -17,8 +17,12 @@ class IncidentResponse(BaseModel):
 
     id: int
     type_id: int
+    type_name: str
     route_id: int
+    route_name: str
     status_id: int
+    status_name: str
+    status_is_final: bool
     cep: str
     city: str | None
     street: str | None
