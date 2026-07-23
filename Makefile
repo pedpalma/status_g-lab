@@ -196,16 +196,23 @@ clean: ## Remove containers, redes, volumes e imagens locais (Reset completo)
 
 
 # Preguiça
-
 lazy:
-	@echo "\n  - Iniciando commit...\n"
+	@clear
+	@gum style \
+		--foreground 212 \
+		--bold \
+		"  Git Lazy"
+	@echo
 	@git status
 	@if git diff --quiet && git diff --cached --quiet; then \
-		echo "\n  ⚠ Nenhuma alteração para commit."; \
+		gum style --foreground 214 "⚠ Nenhuma alteração para commit."; \
 		exit 1; \
 	fi
 	@echo
-	@read -p "  - Mensagem do commit: " msg; \
+	@msg=$$(gum input \
+		--prompt "Commit > " \
+		--placeholder "feat(scope): descrição"); \
+	[ -n "$$msg" ] || exit 1; \
 	git add . && \
 	git commit -m "$$msg" && \
 	git push
