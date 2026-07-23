@@ -23,66 +23,79 @@ help: ## Lista todos os comandos disponíveis no Makefile
 # SETUP & AMBIENTE
 
 setup: ## Realiza a configuração inicial do projeto (Dependências, Env, Build)
-	@echo "Configurando o projeto..."
+	@echo "\n  Configurando o projeto..."
 	@make check-deps
 	@make env-init
 	@make build
 	@echo "\n  ✓ Configuração concluída com sucesso!"
-	@echo "Próximos passos:"
-	@echo "  1. Edite o arquivo .env e ajuste as variáveis de ambiente."
-	@echo "  2. Suba o ambiente com 'make up'"
-	@echo "  3. Rode 'make backend-migrate' para aplicar as migrações."
-	@echo "\nDigite 'make help' para listar os comandos disponíveis.\n"
+	@echo "\n  ⚠ Próximos passos:"
+	@echo "  - 1. Edite o arquivo .env e ajuste as variáveis de ambiente."
+	@echo "  - 2. Suba o ambiente com 'make up'"
+	@echo "  - 3. Rode 'make first-migrate' para aplicar as migrações."
+	@echo "  - 4. Rode 'make admin' para criar o primeiro user admin."
+	@echo "\n  Digite 'make help' para listar os comandos disponíveis.\n"
 
 check-deps: ## Verifica se o Docker, Docker Compose e Git estão instalados
-	@echo "Verificando dependências..."
+	@echo "\n  Verificando dependências...\n"
 	@command -v docker >/dev/null 2>&1 || { echo "✗ docker não encontrado"; exit 1; }
 	@docker compose version >/dev/null 2>&1 || { echo "✗ docker compose v2 não encontrado"; exit 1; }
 	@command -v git >/dev/null 2>&1 || { echo "✗ git não encontrado"; exit 1; }
-	@echo "✓ Dependências OK"
+	@echo "  ✓ Dependências OK"
 
 env-init: ## Cria o arquivo .env a partir do .env.example (caso não exista)
+	@echo "\n  Verificando .env...\n"
 	@if [ ! -f .env ]; then \
 		cp .env.example .env; \
-		echo "✓ Criado arquivo .env"; \
-		echo "⚠ Atenção: Edite o .env e ajuste suas credenciais antes de subir o ambiente."; \
+		echo "  ✓ Criado arquivo .env"; \
+		echo "  ⚠ Atenção: Edite o .env e ajuste suas credenciais antes de subir o ambiente.\n"; \
 	else \
-		echo "ℹ O arquivo .env já existe e não foi sobrescrito."; \
+		echo "  - O arquivo .env já existe e não foi sobrescrito."; \
 	fi
+
+admin:
+	@echo "\n  ⚠ Criando admin...\n"
+	@docker compose exec backend python -m scripts.create_admin
+
 
 
 
 # DOCKER (CICLO DE VIDA)
 
 up: ## Sobe os serviços em background (Detached)
+	@echo "\n  ⚠ Inicializando os serviços..."
 	docker compose up -d
-	@echo "\n  ✓ Serviços iniciados com sucesso"
-	@echo "  API (Backend): http://localhost:8000"
-	@echo "  Swagger/Docs:  http://localhost:8000/docs"
-	@echo "  Frontend:      http://localhost:3000\n"
-
-up-build: ## Reconstrói as imagens e sobe os containers em background
-	docker compose up -d --build
-	@echo "\n  ✓ Serviços reconstruídos e iniciados com sucesso"
+	@echo "\n  ✓ Serviços iniciados com sucesso!"
+	@echo " - API (Backend): http://localhost:8000"
+	@echo " - Swagger/Docs:  http://localhost:8000/docs"
+	@echo " - Frontend:      http://localhost:3000\n"
 
 down: ## Para e remove os containers (Mantém os volumes e dados do banco)
+	@echo "\n  ⚠ Parando serviços..."
 	docker compose down
-	@echo "\n  ✓ Serviços parados com sucesso"
+	@echo "\n  ✓ Serviços parados com sucesso!"
 
 down-v: ## Para e remove os containers, destruindo também os volumes (APAGA OS DADOS)
+	@echo "\n  ⚠ Removendo os serviços..."
 	docker compose down -v
-	@echo "\n  ⚠ Serviços e volumes removidos com sucesso"
+	@echo "\n  ✓ Serviços e volumes removidos com sucesso!"
 
 build: ## Constrói as imagens sem subir os containers
+	@echo "\n  ⚠ Construindo imagens..."
 	docker compose build
+	@echo "\n  ✓ imagens construídas com sucesso!"
 
 rebuild: ## Reconstrói as imagens ignorando o cache (Útil após alterar Dockerfile)
+	@echo "\n  ⚠ Reconstruindo imagens..."
 	docker compose build --no-cache
+	@echo "\n  ✓ imagens reconstruídas com sucesso!"
 
 restart: ## Reinicia os serviços do Docker Compose
+	@echo "\n  ⚠ Reiniciando os serviços Docker..."
 	docker compose restart
+	@echo "\n  ✓ serviços reiniciados com sucesso!"
 
 status: ## Lista os containers do projeto e o status de cada um
+	@echo "\n  - Checagem do status dos serviços:"
 	docker compose ps
 
 
@@ -90,15 +103,19 @@ status: ## Lista os containers do projeto e o status de cada um
 # LOGS
 
 logs: ## Acompanha os logs dos serviços simultaneamente
+	@echo "\n  - Logs dos serviços:\n"
 	docker compose logs -f
 
 logs-backend: ## Acompanha os logs apenas do serviço Backend
+	@echo "\n  - Logs do backend:\n"
 	docker compose logs -f backend
 
 logs-frontend: ## Acompanha os logs apenas do serviço Frontend
+	@echo "\n  - Logs do frontend:\n"
 	docker compose logs -f frontend
 
 logs-db: ## Acompanha os logs apenas do serviço Postgres
+	@echo "\n  - Logs da database:\n"
 	docker compose logs -f postgres
 
 
@@ -107,37 +124,56 @@ logs-db: ## Acompanha os logs apenas do serviço Postgres
 # SHELL & ACESSO
 
 sh-backend: ## Abre o terminal (bash) dentro do container do Backend
+	@echo "\n  ⚠ Criando shell para o container backend...\n"
 	docker compose exec backend bash
+	@echo "\n  ✓ Saindo do shell..."
 
 sh-frontend: ## Abre o terminal (sh) dentro do container do Frontend
+	@echo "\n  ⚠ Criando shell para o container frontend...\n"
 	docker compose exec frontend sh
+	@echo "\n  ✓ Saindo do shell..."
+
 
 sh-db: ## Abre o terminal do PostgreSQL (psql) dentro do container do banco
+	@echo "\n  ⚠ Criando shell de acesso para a database...\n"
 	docker compose exec postgres psql -U $(POSTGRES_USER) -d $(POSTGRES_DB)
+	@echo "\n  ✓ Saindo do shell..."
 
 
 
 # BACKEND
 
 test: ## Executa os testes automatizados do Backend (Pytest)
+	@echo "\n  ⚠ Executando suíte de testes...\n"
 	docker compose exec backend python -m pytest -v
 
-migrate: ## Aplica as migrações pendentes no banco de dados
+first-migrate: ## Aplica as migrações pendentes no banco de dados
+	@echo "\n  ⚠ Garantindo que o db está na 0001...\n"
+	docker compose exec backend alembic stamp 0001
+	docker compose exec backend alembic upgrade head
+
+migrate:
+	@echo "\n  ⚠ Executando migrações...\n"
 	docker compose exec backend alembic upgrade head
 
 deps-outdated: ## Lista as dependências do Python que estão desatualizadas
+	@echo "\n  - Verificando dependências desatualizadas...\n"
 	docker compose exec backend pip list --outdated
 
 deps-compile: ## Recompila o requirements.txt a partir do requirements.in
+	@echo "\n  ⚠ Recompilando requerimentos do projeto...\n"
 	docker compose exec backend pip-compile requirements.in --output-file requirements.txt
 
 deps-upgrade: ## Atualiza as dependências do requirements.in para a última versão
+	@echo "\n  ⚠ Atualizando requerimentos do projeto...\n"
 	docker compose exec backend pip-compile --upgrade requirements.in --output-file requirements.txt
 
 deps-sync: ## Sincroniza os pacotes instalados com o requirements.txt
+	@echo "\n  ⚠ Sincronizando pacotes instalados...\n"
 	docker compose exec backend pip-sync requirements.txt
 
 deps-install: ## Instala as dependências listadas no requirements.txt
+	@echo "\n  ⚠ Instalando requerimentos...\n"
 	docker compose exec backend pip install -r requirements.txt
 
 
@@ -145,6 +181,7 @@ deps-install: ## Instala as dependências listadas no requirements.txt
 # FRONTEND
 
 frontend-update: ## Atualiza as dependências do Frontend (respeitando os ranges do package.json)
+	@echo "\n  ⚠ Atualizando as dependências...\n"
 	docker compose exec frontend npm update
 
 
@@ -152,4 +189,22 @@ frontend-update: ## Atualiza as dependências do Frontend (respeitando os ranges
 # LIMPEZA
 
 clean: ## Remove containers, redes, volumes e imagens locais (Reset completo)
+	@echo "\n  ⚠ Removendo projeto...\n"
 	docker compose down -v --rmi local
+
+
+
+# Preguiça
+
+lazy:
+	@echo "\n  - Iniciando commit...\n"
+	@git status
+	@if git diff --quiet && git diff --cached --quiet; then \
+		echo "\n  ⚠ Nenhuma alteração para commit."; \
+		exit 1; \
+	fi
+	@echo
+	@read -p "  - Mensagem do commit: " msg; \
+	git add . && \
+	git commit -m "$$msg" && \
+	git push
