@@ -2,9 +2,9 @@ from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
 
 from app.core.deps import get_db, require_role
-from app.domains.incidents.models import Incident
 from app.domains.incidents.schemas import IncidentCreate, IncidentResponse
 from app.domains.incidents.services import (
+    IncidentWithNames,
     InvalidReferenceError,
     create_incident,
     get_incident,
@@ -20,7 +20,7 @@ def create_incident_endpoint(
     payload: IncidentCreate,
     db: Session = Depends(get_db),
     current_user: User = Depends(require_role("tecnico", "admin")),
-) -> Incident:
+) -> IncidentWithNames:
     try:
         return create_incident(
             db,
@@ -42,7 +42,7 @@ def list_incidents_endpoint(
     db: Session = Depends(get_db),
     status_id: int | None = None,
     type_id: int | None = None,
-) -> list[Incident]:
+) -> list[IncidentWithNames]:
     return list_incidents(db, status_id=status_id, type_id=type_id)
 
 
@@ -50,7 +50,7 @@ def list_incidents_endpoint(
 def get_incident_endpoint(
     incident_id: int,
     db: Session = Depends(get_db),
-) -> Incident:
+) -> IncidentWithNames:
     incident = get_incident(db, incident_id)
     if incident is None:
         raise HTTPException(
