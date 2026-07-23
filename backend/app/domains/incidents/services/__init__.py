@@ -1,4 +1,5 @@
 from app.domains.incidents.services.incidents import (
+    IncidentWithNames,
     InvalidReferenceError,
     create_incident,
     get_incident,
@@ -6,6 +7,7 @@ from app.domains.incidents.services.incidents import (
 )
 
 __all__ = [
+    "IncidentWithNames",
     "InvalidReferenceError",
     "create_incident",
     "get_incident",
