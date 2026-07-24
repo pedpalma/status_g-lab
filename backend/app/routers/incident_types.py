@@ -41,7 +41,7 @@ def create_incident_type_endpoint(
 @router.get("", response_model=list[IncidentTypeResponse])
 def list_incident_types_endpoint(
     db: Session = Depends(get_db),
-    _: User = Depends(require_role("admin")),
+    _: User = Depends(require_role("tecnico", "admin")),
 ) -> list[IncidentType]:
     return list_incident_types(db)
 

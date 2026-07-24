@@ -35,7 +35,7 @@ def create_route_endpoint(
 @router.get("", response_model=list[RouteResponse])
 def list_routes_endpoint(
     db: Session = Depends(get_db),
-    _: User = Depends(require_role("admin")),
+    _: User = Depends(require_role("tecnico", "admin")),
 ) -> list[Route]:
     return list_routes(db)
 
