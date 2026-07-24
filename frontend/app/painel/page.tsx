@@ -1,15 +1,34 @@
 import Link from "next/link";
 
 const sections = [
-  { href: "/painel/users", label: "Usuários", description: "Gerenciar contas de técnicos e administradores." },
-  { href: "/painel/routes", label: "Rotas", description: "Cadastro de rotas da rede." },
-  { href: "/painel/incident-types", label: "Tipos de incidente", description: "Categorias usadas no registro de incidentes." },
+  {
+    href: "/painel/incidents",
+    label: "Incidentes",
+    description: "Registrar e acompanhar incidentes da rede.",
+  },
+  {
+    href: "/painel/users",
+    label: "Usuários",
+    description: "Gerenciar contas de técnicos e administradores.",
+  },
+  {
+    href: "/painel/routes",
+    label: "Rotas",
+    description: "Cadastro de rotas da rede.",
+  },
+  {
+    href: "/painel/incident-types",
+    label: "Tipos de incidente",
+    description: "Categorias usadas no registro de incidentes.",
+  },
 ];
 
 export default function PainelHome() {
   return (
     <div>
-      <h1 className="font-display text-xl font-semibold text-white">Painel administrativo</h1>
+      <h1 className="font-display text-xl font-semibold text-white">
+        Painel administrativo
+      </h1>
       <ul className="mt-6 divide-y divide-navy-light border-t border-b border-navy-light">
         {sections.map((s) => (
           <li key={s.href}>
