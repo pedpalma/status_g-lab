@@ -1,8 +1,8 @@
 import { formatDateTime } from "../lib/format";
 import { statusColor, type TimelineEntry } from "../lib/incidentStatus";
 
-// Componente de apresentação puro (sem hooks), pra poder ser usado tanto pela
-// página pública de detalhe (server component) quanto pela pagina privada
+// Componente de apresentacao puro (sem hooks), pra poder ser usado tanto pela
+// pagina publica de detalhe (server component) quanto pela pagina privada
 // (client component), sem duplicar o JSX da timeline nos 2 lugares.
 export default function Timeline({ entries }: { entries: TimelineEntry[] }) {
   return (
@@ -14,9 +14,7 @@ export default function Timeline({ entries }: { entries: TimelineEntry[] }) {
               className={`h-2 w-2 rounded-full ${statusColor(entry.status_name, entry.is_final)}`}
             />
             <span className="text-off-white">{entry.status_name}</span>
-            <span className="text-mid-gray">
-              · {formatDateTime(entry.date)}
-            </span>
+            <span className="text-mid-gray">· {formatDateTime(entry.date)}</span>
           </div>
           {(entry.type_name || entry.route_name) && (
             <p className="pl-4 text-xs text-mid-gray">

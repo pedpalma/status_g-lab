@@ -36,23 +36,22 @@ export default function IncidentsPage() {
       ]);
       setIncidents(
         [...incidentsRes].sort(
-          (a, b) =>
-            new Date(b.created_at).getTime() - new Date(a.created_at).getTime(),
+          (a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime(),
         ),
       );
       setTypes(typesRes.filter((t) => t.is_active));
       setRoutes(routesRes.filter((r) => r.is_active));
     } catch (err) {
-      setError(
-        err instanceof ApiError ? err.message : "Falha ao carregar incidentes.",
-      );
+      setError(err instanceof ApiError ? err.message : "Falha ao carregar incidentes.");
     } finally {
       setIsLoading(false);
     }
   }
 
   useEffect(() => {
-    // eslint-disable-next-line react-hooks/set-state-in-effect
+    // loadAll não depende de nada reativo (só roda no mount); mesmo
+    // racional do fix em app/painel/incidents/[id]/page.tsx.
+    // eslint-disable-next-line react-hooks/set-state-in-effect, react-hooks/exhaustive-deps
     loadAll();
   }, []);
 
@@ -75,9 +74,7 @@ export default function IncidentsPage() {
       setIsFormOpen(false);
       await loadAll();
     } catch (err) {
-      setError(
-        err instanceof ApiError ? err.message : "Falha ao criar incidente.",
-      );
+      setError(err instanceof ApiError ? err.message : "Falha ao criar incidente.");
     } finally {
       setIsSaving(false);
     }
@@ -86,9 +83,7 @@ export default function IncidentsPage() {
   return (
     <div>
       <div className="flex items-center justify-between">
-        <h1 className="font-display text-xl font-semibold text-white">
-          Incidentes
-        </h1>
+        <h1 className="font-display text-xl font-semibold text-white">Incidentes</h1>
         <button
           onClick={startCreate}
           className="rounded-md bg-blue-mid px-4 py-2 font-display text-sm font-medium text-white hover:bg-blue"
@@ -100,10 +95,7 @@ export default function IncidentsPage() {
       {error && <p className="mt-4 text-sm text-red-400">{error}</p>}
 
       {isFormOpen && (
-        <form
-          onSubmit={handleSubmit}
-          className="mt-6 flex flex-col gap-4 border-t border-navy-light pt-6"
-        >
+        <form onSubmit={handleSubmit} className="mt-6 flex flex-col gap-4 border-t border-navy-light pt-6">
           <div className="flex flex-col gap-1.5">
             <label className="text-xs text-mid-gray">Tipo</label>
             <select
@@ -153,9 +145,7 @@ export default function IncidentsPage() {
               required
               rows={3}
               value={form.description}
-              onChange={(e) =>
-                setForm({ ...form, description: e.target.value })
-              }
+              onChange={(e) => setForm({ ...form, description: e.target.value })}
               className="rounded-md border border-navy-light bg-navy-light px-3 py-2 text-sm text-white outline-none focus:border-cyan"
             />
           </div>
@@ -204,14 +194,9 @@ export default function IncidentsPage() {
                 </td>
                 <td className="py-3 text-light-gray">{incident.type_name}</td>
                 <td className="py-3 text-light-gray">{incident.route_name}</td>
-                <td className="py-3 text-light-gray">
-                  {formatDateTime(incident.created_at)}
-                </td>
+                <td className="py-3 text-light-gray">{formatDateTime(incident.created_at)}</td>
                 <td className="py-3 text-right">
-                  <Link
-                    href={`/painel/incidents/${incident.id}`}
-                    className="text-light-gray hover:text-cyan"
-                  >
+                  <Link href={`/painel/incidents/${incident.id}`} className="text-light-gray hover:text-cyan">
                     Ver
                   </Link>
                 </td>

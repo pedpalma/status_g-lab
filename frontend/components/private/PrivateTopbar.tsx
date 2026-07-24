@@ -19,10 +19,7 @@ export default function PrivateTopbar() {
       style={{ height: "var(--header-h)" }}
     >
       <div className="flex items-center gap-8">
-        <Link
-          href="/painel"
-          className="font-display text-sm font-semibold text-white"
-        >
+        <Link href="/painel" className="font-display text-sm font-semibold text-white">
           G-Lab Telecom
         </Link>
         <nav className="flex items-center gap-6">

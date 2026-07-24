@@ -11,11 +11,7 @@ import {
   type IncidentUpdate,
 } from "../../../../lib/api";
 import { formatAddress, formatDateTime } from "../../../../lib/format";
-import {
-  statusColor,
-  buildTimelineEntries,
-  INCIDENT_STATUSES,
-} from "../../../../lib/incidentStatus";
+import { statusColor, buildTimelineEntries, INCIDENT_STATUSES } from "../../../../lib/incidentStatus";
 import Timeline from "../../../../components/Timeline";
 
 export default function IncidentDetailPage() {
@@ -39,16 +35,19 @@ export default function IncidentDetailPage() {
       setIncident(incidentRes);
       setUpdates(updatesRes);
     } catch (err) {
-      setError(
-        err instanceof ApiError ? err.message : "Falha ao carregar incidente.",
-      );
+      setError(err instanceof ApiError ? err.message : "Falha ao carregar incidente.");
     } finally {
       setIsLoading(false);
     }
   }
 
   useEffect(() => {
-    // eslint-disable-next-line react-hooks/set-state-in-effect
+    // loadData só depende de incidentId, que já está no array de deps; a
+    // função em si é redefinida a cada render (mesmo padrão de
+    // loadUsers/loadRoutes nas telas admin), então incluir loadData aqui
+    // causaria loop. Mesmo racional de frontend_eslint_set_state_in_effect
+    // em current_state.txt, agora pra exhaustive-deps.
+    // eslint-disable-next-line react-hooks/set-state-in-effect, react-hooks/exhaustive-deps
     loadData();
   }, [incidentId]);
 
@@ -64,11 +63,7 @@ export default function IncidentDetailPage() {
       setForm({ status_id: "", comment: "" });
       await loadData();
     } catch (err) {
-      setError(
-        err instanceof ApiError
-          ? err.message
-          : "Falha ao registrar atualização.",
-      );
+      setError(err instanceof ApiError ? err.message : "Falha ao registrar atualização.");
     } finally {
       setIsSaving(false);
     }
@@ -79,21 +74,14 @@ export default function IncidentDetailPage() {
   }
 
   if (!incident) {
-    return (
-      <p className="text-sm text-red-400">
-        {error || "Incidente não encontrado."}
-      </p>
-    );
+    return <p className="text-sm text-red-400">{error || "Incidente não encontrado."}</p>;
   }
 
   const timeline = buildTimelineEntries(incident, updates);
 
   return (
     <div className="flex flex-col gap-6">
-      <Link
-        href="/painel/incidents"
-        className="text-sm text-cyan hover:underline"
-      >
+      <Link href="/painel/incidents" className="text-sm text-cyan hover:underline">
         ← Voltar para incidentes
       </Link>
 
@@ -110,9 +98,7 @@ export default function IncidentDetailPage() {
         </div>
         <p className="text-sm text-mid-gray">
           Aberto em {formatDateTime(incident.created_at)}
-          {incident.closed_at
-            ? ` · Encerrado em ${formatDateTime(incident.closed_at)}`
-            : ""}
+          {incident.closed_at ? ` · Encerrado em ${formatDateTime(incident.closed_at)}` : ""}
         </p>
       </div>
 
@@ -138,19 +124,12 @@ export default function IncidentDetailPage() {
       </dl>
 
       <div>
-        <h2 className="font-display text-sm font-semibold text-off-white">
-          Histórico
-        </h2>
+        <h2 className="font-display text-sm font-semibold text-off-white">Histórico</h2>
         <Timeline entries={timeline} />
       </div>
 
-      <form
-        onSubmit={handleSubmit}
-        className="flex flex-col gap-4 border-t border-navy-light pt-6"
-      >
-        <h2 className="font-display text-sm font-semibold text-off-white">
-          Nova atualização
-        </h2>
+      <form onSubmit={handleSubmit} className="flex flex-col gap-4 border-t border-navy-light pt-6">
+        <h2 className="font-display text-sm font-semibold text-off-white">Nova atualização</h2>
         <div className="flex flex-col gap-1.5">
           <label className="text-xs text-mid-gray">Status</label>
           <select

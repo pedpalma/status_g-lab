@@ -4,6 +4,9 @@ export type IncidentStatusOption = {
   is_final: boolean;
 };
 
+// Fonte de verdade: seed de incident_status em db/migrations/0001_initial.sql.
+// Hoje nao ha endpoint proprio pra listar status (decision_1 em next_steps.txt
+// segue aberta); hardcode aqui e a opcao mais simples enquanto isso nao mudar.
 export const INCIDENT_STATUSES: IncidentStatusOption[] = [
   { id: 1, name: "aberto", is_final: false },
   { id: 2, name: "equipe_acionada", is_final: false },
@@ -44,6 +47,14 @@ type TimelineUpdate = {
   created_at: string;
 };
 
+// Monta a timeline na ordem pedida pelo usuario em s2_3 (ver current_state.txt
+// /decisions_locked/frontend_public_pages_scope_s2_3): status atual primeiro,
+// updates intermediarios em ordem decrescente de data, abertura por ultimo.
+// Topo e fim mostram motivo+rota (alem de status+data); meio so status+data.
+// A API ja retorna updates ordenado created_at desc, entao o primeiro item da
+// lista E o status atual -- nao precisa duplicar, so separar do resto.
+// Sem nenhuma atualizacao ainda, o incidente segue "aberto" desde a criacao:
+// mostra so a entrada de abertura, evitando repetir a mesma informacao 2x.
 export function buildTimelineEntries(
   incident: TimelineIncident,
   updates: TimelineUpdate[],
