@@ -203,7 +203,7 @@ lazy:
 	@gum style \
 		--foreground 11 \
 		--bold \
-		" └── Lazy commit"
+		"  └── Lazy commit"
 	@echo
 	@if [ -z "$$(git status --porcelain)" ]; then \
 		gum style --foreground 196 "  ⚠ Nenhuma alteração para commit."; \
@@ -216,9 +216,13 @@ lazy:
 		--prompt "Commit > " \
 		--placeholder "action(scope): description" \
 		--value "$$base_msg"); \
-	[ -n "$$msg" ] || { echo; gum style --foreground 196 "❌ Operação cancelada."; exit 1; }; \
+	[ -n "$$msg" ] || { echo; gum style --foreground 196 "✘ Operação cancelada."; exit 1; }; \
 	git add . && \
 	git commit -m "$$msg" && \
 	git push
 	@echo
-	@echo "  ✔ Commit realizado."
+	@gum style \
+		--foreground 11 \
+		--bold \
+		"  ✔ Commit realizado."
+	@echo
