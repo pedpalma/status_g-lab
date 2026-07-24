@@ -153,7 +153,6 @@ test: ## Executa os testes automatizados do Backend (Pytest)
 first-migrate: ## Aplica as migrações pendentes no banco de dados
 	@echo "\n  ⚠ Garantindo que o db está na 0001...\n"
 	@docker compose exec backend alembic stamp 0001
-	@docker compose exec backend alembic upgrade head
 
 migrate:
 	@echo "\n  ⚠ Executando migrações...\n"
