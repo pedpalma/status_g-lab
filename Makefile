@@ -15,7 +15,7 @@ export
 
 # AJUDA
 
-help: ## Lista todos os comandos disponíveis no Makefile
+help: ## Lista os comandos disponíveis no Makefile
 	@grep -hE '^[a-zA-Z_-]+:.*## ' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*## "}; {printf "\033[36m%-22s\033[0m %s\n", $$1, $$2}'
 
 
@@ -31,8 +31,9 @@ setup: ## Realiza a configuração inicial do projeto (Dependências, Env, Build
 	@echo "\n  ⚠ Próximos passos:"
 	@echo "  - 1. Edite o arquivo .env e ajuste as variáveis de ambiente."
 	@echo "  - 2. Suba o ambiente com 'make up'"
-	@echo "  - 3. Rode 'make first-migrate' para aplicar as migrações."
-	@echo "  - 4. Rode 'make admin' para criar o primeiro user admin."
+	@echo "  - 3. Rode 'make first-migrate' para garantir que o 0001 esteja aplicado."
+	@echo "  - 4. Rode 'make migrate para aplicar as demais migrações"
+	@echo "  - 5. Rode 'make admin' para criar o primeiro user admin."
 	@echo "\n  Digite 'make help' para listar os comandos disponíveis.\n"
 
 check-deps: ## Verifica se o Docker, Docker Compose e Git estão instalados
@@ -198,19 +199,18 @@ clean: ## Remove containers, redes, volumes e imagens locais (Reset completo)
 
 # Preguiça
 lazy:
-	@clear
 	@gum style \
-		--foreground 212 \
+		--foreground 11 \
 		--bold \
 		" - Lazy commit"
 	@echo
 	@if [ -z "$$(git status --porcelain)" ]; then \
-		gum style --foreground 214 " ⚠ Nenhuma alteração para commit."; \
+		gum style --foreground 14 "  ⚠ Nenhuma alteração para commit."; \
 		exit 1; \
 	fi
 	@echo
-	@gum style --foreground 240 "Selecione um commit base para editar (ou aperte ESC para começar do zero)."
-	@base_msg=$$(git log -n 30 --pretty=format:"%s" | awk '!seen[$$0]++' | gum filter --height 10 --placeholder "Pesquise commits antigos..." || true); \
+	@gum style --foreground 11 "  -> Selecione um commit base para editar (ou aperte ESC para começar do zero)."
+	@base_msg=$$(git log -n 50 --pretty=format:"%s" | awk '!seen[$$0]++' | gum filter --height 10 --placeholder "Pesquise commits antigos..." || true); \
 	msg=$$(gum input \
 		--prompt "Commit > " \
 		--placeholder "feat(scope): descrição" \

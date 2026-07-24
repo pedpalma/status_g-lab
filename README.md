@@ -28,7 +28,8 @@ make setup
   - Postgres, na porta 5432.
   - Backend (FastAPI), na porta 8000.
   - Frontend (Next.js), na porta 3000 (público) e 3000/login (técnico).
-- Rodar `make first-migrate`, que garante o 0001 aplicado e aplica as migrations seguintes.
+- Rodar `make first-migrate`, que garante o 0001 aplicado.
+- Rodar `make migrate` para aplicar as migrations do banco de dados.
 - Rodar `make admin` para criar o usuário admin do sistema.
 
 ## Obtendo logs:
