@@ -70,11 +70,13 @@ def test_list_incident_types_ok(
     assert tipo_ativo.name in nomes
 
 
-def test_list_incident_types_tecnico_bloqueado(
-    client: TestClient, tecnico_headers: dict
+def test_list_incident_types_tecnico_ok(
+    client: TestClient, tecnico_headers: dict, tipo_ativo: IncidentType
 ):
     response = client.get("/incident-types", headers=tecnico_headers)
-    assert response.status_code == 403
+    assert response.status_code == 200
+    nomes = [t["name"] for t in response.json()]
+    assert tipo_ativo.name in nomes
 
 
 # get

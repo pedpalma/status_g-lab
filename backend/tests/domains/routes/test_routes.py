@@ -66,9 +66,13 @@ def test_list_routes_ok(client: TestClient, admin_headers: dict, rota_ativa: Rou
     assert rota_ativa.name in nomes
 
 
-def test_list_routes_tecnico_bloqueado(client: TestClient, tecnico_headers: dict):
+def test_list_routes_tecnico_ok(
+    client: TestClient, tecnico_headers: dict, rota_ativa: Route
+):
     response = client.get("/routes", headers=tecnico_headers)
-    assert response.status_code == 403
+    assert response.status_code == 200
+    nomes = [r["name"] for r in response.json()]
+    assert rota_ativa.name in nomes
 
 
 # get
