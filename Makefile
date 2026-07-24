@@ -66,9 +66,11 @@ up: ## Sobe os serviços em background (Detached)
 	docker compose up -d
 	@echo
 	@echo "\n  ✓ Serviços iniciados com sucesso!"
-	@echo " - API (Backend): http://localhost:8000"
-	@echo " - Swagger/Docs:  http://localhost:8000/docs"
-	@echo " - Frontend:      http://localhost:3000\n"
+	@echo " - API (Backend):     http://localhost:8000"
+	@echo " - Swagger/Docs:      http://localhost:8000/docs"
+	@echo " - Frontend público:  http://localhost:3000\n"
+	@echo " - Frontend admin:    http://localhost:3000/login\n"
+
 	@echo
 down: ## Para e remove os containers (Mantém os volumes e dados do banco)
 	@echo "\n  ⚠ Parando serviços...\n"
