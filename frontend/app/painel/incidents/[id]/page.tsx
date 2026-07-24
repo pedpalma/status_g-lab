@@ -47,8 +47,9 @@ export default function IncidentDetailPage() {
     // loadUsers/loadRoutes nas telas admin), então incluir loadData aqui
     // causaria loop. Mesmo racional de frontend_eslint_set_state_in_effect
     // em current_state.txt, agora pra exhaustive-deps.
-    // eslint-disable-next-line react-hooks/set-state-in-effect, react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     loadData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [incidentId]);
 
   async function handleSubmit(e: FormEvent) {
