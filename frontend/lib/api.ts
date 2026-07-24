@@ -182,3 +182,30 @@ export const incidentsApi = {
       body: JSON.stringify(data),
     }),
 };
+
+// incident updates (timeline)
+export type IncidentUpdate = {
+  id: number;
+  incident_id: number;
+  status_id: number;
+  status_name: string;
+  status_is_final: boolean;
+  comment: string | null;
+  created_by: number;
+  created_at: string;
+};
+
+export type IncidentUpdateInput = {
+  status_id: number;
+  comment?: string;
+};
+
+export const incidentUpdatesApi = {
+  list: (incidentId: number) =>
+    request<IncidentUpdate[]>(`/incidents/${incidentId}/updates`),
+  create: (incidentId: number, data: IncidentUpdateInput) =>
+    request<IncidentUpdate>(`/incidents/${incidentId}/updates`, {
+      method: "POST",
+      body: JSON.stringify(data),
+    }),
+};
