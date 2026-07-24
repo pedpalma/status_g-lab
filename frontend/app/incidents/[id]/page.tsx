@@ -3,8 +3,9 @@ export const dynamic = "force-dynamic";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import PublicHeader from "../../../components/public/PublicHeader";
+import Timeline from "../../../components/Timeline";
 import { formatAddress, formatDateTime } from "../../../lib/format";
-import { statusColor } from "../../../lib/incidentStatus";
+import { statusColor, buildTimelineEntries } from "../../../lib/incidentStatus";
 
 type Incident = {
   id: number;
@@ -18,6 +19,13 @@ type Incident = {
   description: string;
   created_at: string;
   closed_at: string | null;
+};
+
+type IncidentUpdate = {
+  status_name: string;
+  status_is_final: boolean;
+  comment: string | null;
+  created_at: string;
 };
 
 async function getIncident(id: string): Promise<Incident | null> {
@@ -35,6 +43,21 @@ async function getIncident(id: string): Promise<Incident | null> {
   }
 }
 
+async function getUpdates(id: string): Promise<IncidentUpdate[]> {
+  const baseUrl = process.env.BACKEND_INTERNAL_URL;
+  if (!baseUrl) return [];
+
+  try {
+    const res = await fetch(`${baseUrl}/incidents/${id}/updates`, {
+      cache: "no-store",
+    });
+    if (!res.ok) return [];
+    return res.json();
+  } catch {
+    return [];
+  }
+}
+
 export default async function IncidentDetailPage({
   params,
 }: {
@@ -44,6 +67,9 @@ export default async function IncidentDetailPage({
   const incident = await getIncident(id);
 
   if (!incident) notFound();
+
+  const updates = await getUpdates(id);
+  const timeline = buildTimelineEntries(incident, updates);
 
   return (
     <>
@@ -90,6 +116,13 @@ export default async function IncidentDetailPage({
             <dd className="text-off-white">{incident.description}</dd>
           </div>
         </dl>
+
+        <div>
+          <h2 className="font-display text-sm font-semibold text-off-white">
+            Histórico
+          </h2>
+          <Timeline entries={timeline} />
+        </div>
       </main>
     </>
   );
