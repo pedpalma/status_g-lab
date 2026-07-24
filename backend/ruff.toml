@@ -1,4 +1,3 @@
-# Config do Ruff pro backend.
 [lint.flake8-bugbear]
 extend-immutable-calls = [
     "fastapi.Depends",
@@ -10,4 +9,5 @@ extend-immutable-calls = [
     "fastapi.File",
     "fastapi.Form",
     "fastapi.Security",
+    "app.core.deps.require_role",
 ]
