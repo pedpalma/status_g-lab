@@ -63,43 +63,43 @@ admin:
 
 up: ## Sobe os serviços em background (Detached)
 	@echo "\n  ⚠ Inicializando os serviços...\n"
-	docker compose up -d
+	@docker compose --ansi always up -d
 	@echo
 	@echo "\n  ✓ Serviços iniciados com sucesso!"
-	@echo " - API (Backend):     http://localhost:8000"
-	@echo " - Swagger/Docs:      http://localhost:8000/docs"
-	@echo " - Frontend público:  http://localhost:3000\n"
-	@echo " - Frontend admin:    http://localhost:3000/login\n"
+	@echo "  - API (Backend):     http://localhost:8000"
+	@echo "  - Swagger/Docs:      http://localhost:8000/docs"
+	@echo "  - Frontend público:  http://localhost:3000"
+	@echo "  - Frontend admin:    http://localhost:3000/login\n"
 
 	@echo
 down: ## Para e remove os containers (Mantém os volumes e dados do banco)
 	@echo "\n  ⚠ Parando serviços...\n"
-	docker compose down
+	@docker compose down
 	@echo "\n  ✓ Serviços parados com sucesso!\n"
 
 down-v: ## Para e remove os containers, destruindo também os volumes (APAGA OS DADOS)
 	@echo "\n  ⚠ Removendo os serviços...\n"
-	docker compose down -v
+	@docker compose down -v
 	@echo "\n  ✓ Serviços e volumes removidos com sucesso!\n"
 
 build: ## Constrói as imagens sem subir os containers
 	@echo "\n  ⚠ Construindo imagens...\n"
-	docker compose build
+	@docker compose build
 	@echo "\n  ✓ imagens construídas com sucesso!\n"
 
 rebuild: ## Reconstrói as imagens ignorando o cache (Útil após alterar Dockerfile)
 	@echo "\n  ⚠ Reconstruindo imagens...\n"
-	docker compose build --no-cache
+	@docker compose build --no-cache
 	@echo "\n  ✓ imagens reconstruídas com sucesso!\n"
 
 restart: ## Reinicia os serviços do Docker Compose
 	@echo "\n  ⚠ Reiniciando os serviços Docker...\n"
-	docker compose restart
+	@docker compose restart
 	@echo "\n  ✓ serviços reiniciados com sucesso!\n"
 
 status: ## Lista os containers do projeto e o status de cada um
 	@echo "\n  - Checagem do status dos serviços:\n"
-	docker compose ps
+	@docker compose ps
 
 
 
@@ -107,19 +107,19 @@ status: ## Lista os containers do projeto e o status de cada um
 
 logs: ## Acompanha os logs dos serviços simultaneamente
 	@echo "\n  - Logs dos serviços:\n"
-	docker compose logs -f
+	@docker compose logs -f
 
 logs-backend: ## Acompanha os logs apenas do serviço Backend
 	@echo "\n  - Logs do backend:\n"
-	docker compose logs -f backend
+	@docker compose logs -f backend
 
 logs-frontend: ## Acompanha os logs apenas do serviço Frontend
 	@echo "\n  - Logs do frontend:\n"
-	docker compose logs -f frontend
+	@docker compose logs -f frontend
 
 logs-db: ## Acompanha os logs apenas do serviço Postgres
 	@echo "\n  - Logs da database:\n"
-	docker compose logs -f postgres
+	@docker compose logs -f postgres
 
 
 
@@ -128,18 +128,18 @@ logs-db: ## Acompanha os logs apenas do serviço Postgres
 
 sh-backend: ## Abre o terminal (bash) dentro do container do Backend
 	@echo "\n  ⚠ Criando shell para o container backend...\n"
-	docker compose exec backend bash
+	@docker compose exec backend bash
 	@echo "\n  ✓ Saindo do shell...\n"
 
 sh-frontend: ## Abre o terminal (sh) dentro do container do Frontend
 	@echo "\n  ⚠ Criando shell para o container frontend...\n"
-	docker compose exec frontend sh
+	@docker compose exec frontend sh
 	@echo "\n  ✓ Saindo do shell...\n"
 
 
 sh-db: ## Abre o terminal do PostgreSQL (psql) dentro do container do banco
 	@echo "\n  ⚠ Criando shell de acesso para a database...\n"
-	docker compose exec postgres psql -U $(POSTGRES_USER) -d $(POSTGRES_DB)
+	@docker compose exec postgres psql -U $(POSTGRES_USER) -d $(POSTGRES_DB)
 	@echo "\n  ✓ Saindo do shell..\n"
 
 
@@ -148,36 +148,36 @@ sh-db: ## Abre o terminal do PostgreSQL (psql) dentro do container do banco
 
 test: ## Executa os testes automatizados do Backend (Pytest)
 	@echo "\n  ⚠ Executando suíte de testes...\n"
-	docker compose exec backend python -m pytest -v
+	@docker compose exec backend python -m pytest -v
 
 first-migrate: ## Aplica as migrações pendentes no banco de dados
 	@echo "\n  ⚠ Garantindo que o db está na 0001...\n"
-	docker compose exec backend alembic stamp 0001
-	docker compose exec backend alembic upgrade head
+	@docker compose exec backend alembic stamp 0001
+	@docker compose exec backend alembic upgrade head
 
 migrate:
 	@echo "\n  ⚠ Executando migrações...\n"
-	docker compose exec backend alembic upgrade head
+	@docker compose exec backend alembic upgrade head
 
 deps-outdated: ## Lista as dependências do Python que estão desatualizadas
 	@echo "\n  - Verificando dependências desatualizadas...\n"
-	docker compose exec backend pip list --outdated
+	@docker compose exec backend pip list --outdated
 
 deps-compile: ## Recompila o requirements.txt a partir do requirements.in
 	@echo "\n  ⚠ Recompilando requerimentos do projeto...\n"
-	docker compose exec backend pip-compile requirements.in --output-file requirements.txt
+	@docker compose exec backend pip-compile requirements.in --output-file requirements.txt
 
 deps-upgrade: ## Atualiza as dependências do requirements.in para a última versão
 	@echo "\n  ⚠ Atualizando requerimentos do projeto...\n"
-	docker compose exec backend pip-compile --upgrade requirements.in --output-file requirements.txt
+	@docker compose exec backend pip-compile --upgrade requirements.in --output-file requirements.txt
 
 deps-sync: ## Sincroniza os pacotes instalados com o requirements.txt
 	@echo "\n  ⚠ Sincronizando pacotes instalados...\n"
-	docker compose exec backend pip-sync requirements.txt
+	@docker compose exec backend pip-sync requirements.txt
 
 deps-install: ## Instala as dependências listadas no requirements.txt
 	@echo "\n  ⚠ Instalando requerimentos...\n"
-	docker compose exec backend pip install -r requirements.txt
+	@docker compose exec backend pip install -r requirements.txt
 
 
 
@@ -185,7 +185,7 @@ deps-install: ## Instala as dependências listadas no requirements.txt
 
 frontend-update: ## Atualiza as dependências do Frontend (respeitando os ranges do package.json)
 	@echo "\n  ⚠ Atualizando as dependências...\n"
-	docker compose exec frontend npm update
+	@docker compose exec frontend npm update
 
 
 
@@ -193,7 +193,7 @@ frontend-update: ## Atualiza as dependências do Frontend (respeitando os ranges
 
 clean: ## Remove containers, redes, volumes e imagens locais (Reset completo)
 	@echo "\n  ⚠ Removendo projeto...\n"
-	docker compose down -v --rmi local
+	@docker compose down -v --rmi local
 
 
 
